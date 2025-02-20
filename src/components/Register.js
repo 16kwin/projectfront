@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './register.css'; // Импортируем CSS-файл
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [role, setRole] = useState('USER'); // Значение по умолчанию
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,7 +19,8 @@ const Register = () => {
         username: username,
         password: password,
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
+        role: role // Отправляем выбранную роль на бэкенд
       });
 
       alert('Registration successful!');
@@ -29,7 +32,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="auth-container"> {/* Apply the auth-container class */}
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -64,9 +67,16 @@ const Register = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
+        <div>
+          <label>Role:</label>
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
         <button type="submit">Register</button>
       </form>
-      <button onClick={() => navigate('/login')}>Login</button>
+      <button className="login-button" onClick={() => navigate('/login')}>Login</button> {/* Use a styled button for Login */}
     </div>
   );
 };

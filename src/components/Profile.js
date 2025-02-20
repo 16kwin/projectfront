@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './profile.css'; // Import CSS file
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -43,16 +44,33 @@ const Profile = () => {
     navigate('/login');
   }, [navigate]);
 
+  const handleUserButtonClick = useCallback(() => {
+    // Действия для кнопки User
+    alert('User button clicked!');
+  }, []);
+
+  const handleAdminButtonClick = useCallback(() => {
+    if (userData && userData.roleName === 'ADMIN') {
+      // Действия для кнопки Admin
+      alert('Admin button clicked!');
+    } else {
+      // Отображаем сообщение об отсутствии прав доступа
+      alert('You do not have permission to access this feature.');
+    }
+  }, [userData]);
+
   if (!userData) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <div className="profile-container"> {/* Apply the profile-container class */}
       <h2>Profile</h2>
       <p>Username: {userData.username}</p>
       <p>First Name: {userData.firstName}</p>
       <p>Last Name: {userData.lastName}</p>
+      <button onClick={handleUserButtonClick}>User Button</button>
+      <button onClick={handleAdminButtonClick} disabled={userData.roleName !== 'ADMIN'}>Admin Button</button>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
